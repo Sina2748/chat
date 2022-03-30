@@ -31,6 +31,13 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
+  void getmessages() async {
+    final messages = await firestore.collection('messages').get();
+    for (var message in messages.docs) {
+      print(message.data());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,9 +47,9 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                auth.signOut();
-                Navigator.pop(context);
-                //Implement logout functionality
+                getmessages();
+                // auth.signOut();
+                // Navigator.pop(context);
               }),
         ],
         title: Text('⚡️Chat'),
