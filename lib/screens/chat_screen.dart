@@ -31,10 +31,18 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  void getmessages() async {
-    final messages = await firestore.collection('messages').get();
-    for (var message in messages.docs) {
-      print(message.data());
+  // void getmessages() async {
+  //   final messages = await firestore.collection('messages').get();
+  //   for (var message in messages.docs) {
+  //     print(message.data());
+  //   }
+  // }
+
+  void messagesStream() async {
+    await for (var snapshot in firestore.collection('messages').snapshots()) {
+      for (var message in snapshot.docs) {
+        print(message.data());
+      }
     }
   }
 
@@ -47,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
           IconButton(
               icon: Icon(Icons.close),
               onPressed: () {
-                getmessages();
+                messagesStream();
                 // auth.signOut();
                 // Navigator.pop(context);
               }),
